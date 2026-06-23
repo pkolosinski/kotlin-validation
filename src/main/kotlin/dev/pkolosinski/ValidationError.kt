@@ -1,6 +1,4 @@
 package dev.pkolosinski
 
 @JvmInline
-value class ValidationError(
-    val message: String,
-)
+value class ValidationError(val message: String)
