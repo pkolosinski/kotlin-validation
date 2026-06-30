@@ -1,4 +1,5 @@
 plugins {
+    `maven-publish`
     kotlin("jvm") version "2.4.0"
     id("org.jlleitschuh.gradle.ktlint") version "14.2.0"
     id("pl.allegro.tech.build.axion-release") version "1.21.2"
@@ -23,4 +24,19 @@ dependencies {
 
 tasks.withType<Test>().configureEach {
     useJUnitPlatform()
+}
+
+publishing {
+    publications {
+        create<MavenPublication>("maven") {
+            from(components["java"])
+        }
+    }
+    repositories {
+        maven {
+            name = "GitHubPackages"
+            url = uri("https://maven.pkg.github.com/pkolosinski/kotlin-validation")
+            credentials(PasswordCredentials::class)
+        }
+    }
 }
