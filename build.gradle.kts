@@ -28,7 +28,7 @@ tasks.withType<Test>().configureEach {
 
 publishing {
     publications {
-        create<MavenPublication>("maven") {
+        register<MavenPublication>("gpr") {
             from(components["java"])
         }
     }
@@ -36,7 +36,10 @@ publishing {
         maven {
             name = "GitHubPackages"
             url = uri("https://maven.pkg.github.com/pkolosinski/kotlin-validation")
-            credentials(PasswordCredentials::class)
+            credentials {
+                username = System.getenv("GITHUB_ACTOR")
+                password = System.getenv("GITHUB_TOKEN")
+            }
         }
     }
 }
