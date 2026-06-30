@@ -1,10 +1,15 @@
 plugins {
     kotlin("jvm") version "2.4.0"
     id("org.jlleitschuh.gradle.ktlint") version "14.2.0"
+    id("pl.allegro.tech.build.axion-release") version "1.21.2"
 }
 
 group = "dev.pkolosinski"
-version = "0.0.1"
+version = scmVersion.version
+
+kotlin {
+    jvmToolchain(25)
+}
 
 repositories {
     mavenCentral()
@@ -16,10 +21,6 @@ dependencies {
     testImplementation("io.kotest:kotest-runner-junit6")
 }
 
-kotlin {
-    jvmToolchain(25)
-}
-
-tasks.test {
+tasks.withType<Test>().configureEach {
     useJUnitPlatform()
 }
