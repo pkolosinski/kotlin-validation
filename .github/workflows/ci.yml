@@ -63,6 +63,6 @@ jobs:
           java-version: 25
 
       - name: Publish to GitHub Packages
-        run: ./gradlew publish
+        run: ./gradlew publishAllPublicationsToGitHubPackagesRepository
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

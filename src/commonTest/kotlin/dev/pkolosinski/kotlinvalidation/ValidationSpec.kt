@@ -1,13 +1,21 @@
-package dev.pkolosinski
+@file:OptIn(ExperimentalUuidApi::class)
 
-import dev.pkolosinski.ValidationResult.Invalid
-import dev.pkolosinski.ValidationResult.Valid
+package dev.pkolosinski.kotlinvalidation
+
+import dev.pkolosinski.kotlinvalidation.ValidationResult.Invalid
+import dev.pkolosinski.kotlinvalidation.ValidationResult.Valid
 import io.kotest.core.spec.style.ShouldSpec
 import io.kotest.matchers.collections.shouldContainAll
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.types.shouldBeTypeOf
-import java.time.Instant
-import java.time.LocalDate
+import kotlinx.datetime.DateTimeUnit
+import kotlinx.datetime.LocalDate
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.plus
+import kotlinx.datetime.toLocalDateTime
+import kotlin.time.Clock
+import kotlin.time.Instant
+import kotlin.uuid.ExperimentalUuidApi
 import kotlin.uuid.Uuid
 
 private data class SampleDto(
@@ -29,10 +37,12 @@ private val validSample = SampleDto(
     phoneNumber = "+1234567890",
     email = "john.doe@example.com",
     dateOfBirth = LocalDate.parse("1990-01-01"),
-    createdAt = Instant.now(),
+    createdAt = Clock.System.now(),
 )
 
 class ValidationSpec : ShouldSpec({
+    fun now(): LocalDate = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).date
+
     context("Validate SampleDto against given rules") {
         val validator = { dto: SampleDto ->
             validate(dto) {
@@ -52,7 +62,7 @@ class ValidationSpec : ShouldSpec({
                     "Invalid email format",
                 )
                 ensure(
-                    it.dateOfBirth.isBefore(LocalDate.now()),
+                    it.dateOfBirth < now(),
                     "Date of birth must be in the past",
                 )
             }
@@ -84,7 +94,7 @@ class ValidationSpec : ShouldSpec({
                 age = -1,
                 phoneNumber = "invalid",
                 email = "invalid",
-                dateOfBirth = LocalDate.now().plusDays(1),
+                dateOfBirth = now().plus(1, DateTimeUnit.DAY),
             )
 
             val result = validator(dto)

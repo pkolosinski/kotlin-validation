@@ -1,4 +1,4 @@
-package dev.pkolosinski
+package dev.pkolosinski.kotlinvalidation
 
 sealed interface ValidationResult<T> {
     data class Valid<T>(val value: T) : ValidationResult<T>
