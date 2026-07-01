@@ -1,45 +1,80 @@
+import org.gradle.api.tasks.testing.logging.TestExceptionFormat.FULL
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_25
+
 plugins {
     `maven-publish`
-    kotlin("jvm") version "2.4.0"
-    id("org.jlleitschuh.gradle.ktlint") version "14.2.0"
-    id("pl.allegro.tech.build.axion-release") version "1.21.2"
+    alias(libs.plugins.android.multiplatform.library)
+    alias(libs.plugins.axion.release)
+    alias(libs.plugins.kotest)
+    alias(libs.plugins.kotlin.multiplatform)
+    alias(libs.plugins.ksp)
+    alias(libs.plugins.ktlint)
 }
 
-group = "dev.pkolosinski"
+group = "dev.pkolosinski.kotlinvalidation"
 version = scmVersion.version
 
 kotlin {
-    jvmToolchain(25)
-}
+    jvm {
+        compilerOptions {
+            jvmTarget = JVM_25
+        }
+    }
+    iosArm64()
+    iosSimulatorArm64()
+    android {
+        namespace = "dev.pkolosinski.kotlinvalidation"
+        compileSdk = 36
+        minSdk = 33
+        compilerOptions {
+            jvmTarget = JVM_25
+        }
+        withHostTest { }
+    }
 
-repositories {
-    mavenCentral()
-}
-
-dependencies {
-    testImplementation(platform("io.kotest:kotest-bom:6.2.1"))
-    testImplementation("io.kotest:kotest-assertions-core")
-    testImplementation("io.kotest:kotest-runner-junit6")
+    sourceSets {
+        commonTest.dependencies {
+            implementation(libs.kotest.assertions.core)
+            implementation(libs.kotest.framework.engine)
+            implementation(libs.kotlinx.datetime)
+        }
+        jvmTest.dependencies {
+            implementation(libs.kotest.runner.junit6)
+        }
+        named("androidHostTest").dependencies {
+            implementation(libs.kotest.runner.junit6)
+        }
+    }
 }
 
 tasks.withType<Test>().configureEach {
     useJUnitPlatform()
+    testLogging {
+        showStandardStreams = true
+        exceptionFormat = FULL
+    }
 }
 
-publishing {
-    publications {
-        register<MavenPublication>("gpr") {
-            from(components["java"])
-        }
-    }
-    repositories {
-        maven {
-            name = "GitHubPackages"
-            url = uri("https://maven.pkg.github.com/pkolosinski/kotlin-validation")
-            credentials {
-                username = System.getenv("GITHUB_ACTOR")
-                password = System.getenv("GITHUB_TOKEN")
-            }
-        }
+ktlint {
+    filter {
+        exclude("**/generated/**")
     }
 }
+
+// publishing {
+//    publications {
+//        register<MavenPublication>("gpr") {
+//            from(components["java"])
+//        }
+//    }
+//    repositories {
+//        maven {
+//            name = "GitHubPackages"
+//            url = uri("https://maven.pkg.github.com/pkolosinski/kotlin-validation")
+//            credentials {
+//                username = System.getenv("GITHUB_ACTOR")
+//                password = System.getenv("GITHUB_TOKEN")
+//            }
+//        }
+//    }
+// }

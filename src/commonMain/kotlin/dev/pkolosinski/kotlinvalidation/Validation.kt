@@ -1,4 +1,4 @@
-package dev.pkolosinski
+package dev.pkolosinski.kotlinvalidation
 
 typealias ValidationState = MutableList<ValidationError>
 
@@ -10,7 +10,6 @@ inline fun <T> validate(
         validateBlock(value)
     }
 
-    @Suppress("KotlinConstantConditions")
     return if (validationState.isEmpty()) {
         ValidationResult.Valid(value)
     } else {
