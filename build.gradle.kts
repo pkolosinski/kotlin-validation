@@ -1,5 +1,4 @@
 import org.gradle.api.tasks.testing.logging.TestExceptionFormat.FULL
-import org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_25
 
 plugins {
     `maven-publish`
