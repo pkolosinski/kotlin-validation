@@ -1,0 +1,22 @@
+[versions]
+agp = "9.2.1"
+axion_release = "1.21.2"
+kotlin = "2.4.0"
+kotlinx_datetime = "0.8.0"
+kotest = "6.2.1"
+ksp = "2.3.6"
+ktlint = "14.2.0"
+
+[libraries]
+kotest-assertions-core = { module = "io.kotest:kotest-assertions-core", version.ref = "kotest" }
+kotest-framework-engine = { module = "io.kotest:kotest-framework-engine", version.ref = "kotest" }
+kotest-runner-junit6 = { module = "io.kotest:kotest-runner-junit6", version.ref = "kotest" }
+kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlinx_datetime" }
+
+[plugins]
+android-multiplatform-library = { id = "com.android.kotlin.multiplatform.library", version.ref = "agp" }
+axion-release = { id = "pl.allegro.tech.build.axion-release", version.ref = "axion_release" }
+kotest = { id = "io.kotest", version.ref = "kotest" }
+kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
+ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
+ktlint = { id = "org.jlleitschuh.gradle.ktlint", version.ref = "ktlint" }
