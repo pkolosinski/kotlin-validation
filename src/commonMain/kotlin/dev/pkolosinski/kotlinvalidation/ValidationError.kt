@@ -1,3 +1,7 @@
 package dev.pkolosinski.kotlinvalidation
 
-expect value class ValidationError(val message: String)
+data class ValidationError(
+    val path: String? = null,
+    val errorCode: String? = null,
+    val message: String? = null,
+)

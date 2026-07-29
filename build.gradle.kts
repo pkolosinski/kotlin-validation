@@ -14,10 +14,13 @@ group = "dev.pkolosinski.kotlinvalidation"
 version = scmVersion.version
 
 kotlin {
-    jvmToolchain(25)
+    jvmToolchain(21)
+
     jvm()
     iosArm64()
-    iosSimulatorArm64()
+    iosSimulatorArm64 {
+        withSourcesJar(publish = false)
+    }
     android {
         namespace = "dev.pkolosinski.kotlinvalidation"
         compileSdk = 36
