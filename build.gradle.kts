@@ -44,6 +44,10 @@ kotlin {
     }
 }
 
+ktlint {
+    version = "1.8.0"
+}
+
 tasks.withType<Test>().configureEach {
     useJUnitPlatform()
     testLogging {
