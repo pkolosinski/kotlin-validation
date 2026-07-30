@@ -8,10 +8,9 @@ typealias Validator<T> = (T) -> ValidationResult<T>
 fun <T> buildValidator(
     failFast: Boolean = false,
     validationBlock: ValidationBuilder<T>.() -> Unit,
-): Validator<T> =
-    ValidationBuilder<T>(failFast = failFast)
-        .apply(validationBlock)
-        .build()
+): Validator<T> = ValidationBuilder<T>(failFast = failFast)
+    .apply(validationBlock)
+    .build()
 
 /**
  * Validates the [value] against the provided rules in [validationBlock].
