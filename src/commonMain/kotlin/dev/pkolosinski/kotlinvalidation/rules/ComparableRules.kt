@@ -31,10 +31,10 @@ fun <T, R : Comparable<R>> KProperty1<T, R?>.max(
  * Validates that the property value is within the specified [range].
  */
 context(builder: ValidationBuilder<T>)
-fun <T, R : Comparable<R>> KProperty1<T, R?>.range(
-    range: ClosedRange<R>,
+fun <T, R : Comparable<R>, Range> KProperty1<T, R?>.inRange(
+    range: Range,
     message: String? = null,
     errorCode: String? = null,
-) = with(builder) {
+) where Range : ClosedRange<R>, Range : OpenEndRange<R> = with(builder) {
     satisfies(message, errorCode) { it == null || it in range }
 }

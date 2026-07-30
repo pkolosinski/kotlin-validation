@@ -30,7 +30,7 @@ fun <T> KProperty1<T, String?>.isNotEmpty(
  * Validates that the property value matches the given regular expression.
  */
 context(builder: ValidationBuilder<T>)
-fun <T> KProperty1<T, String?>.regex(
+fun <T> KProperty1<T, String?>.matches(
     pattern: String,
     message: String? = null,
     errorCode: String? = null,
@@ -78,7 +78,7 @@ fun <T> KProperty1<T, String?>.lengthIn(
  * Validates that the property value contains only digits.
  */
 context(builder: ValidationBuilder<T>)
-fun <T> KProperty1<T, String?>.digitsOnly(
+fun <T> KProperty1<T, String?>.isDigitsOnly(
     message: String? = null,
     errorCode: String? = null,
 ) = with(builder) {
@@ -89,7 +89,7 @@ fun <T> KProperty1<T, String?>.digitsOnly(
  * Validates that the property value contains only alphabetic characters.
  */
 context(builder: ValidationBuilder<T>)
-fun <T> KProperty1<T, String?>.lettersOnly(
+fun <T> KProperty1<T, String?>.isLettersOnly(
     message: String? = null,
     errorCode: String? = null,
 ) = with(builder) {
@@ -100,7 +100,7 @@ fun <T> KProperty1<T, String?>.lettersOnly(
  * Validates that the property value is alphanumeric.
  */
 context(builder: ValidationBuilder<T>)
-fun <T> KProperty1<T, String?>.alphanumeric(
+fun <T> KProperty1<T, String?>.isAlphanumeric(
     message: String? = null,
     errorCode: String? = null,
 ) = with(builder) {
@@ -111,7 +111,7 @@ fun <T> KProperty1<T, String?>.alphanumeric(
  * Validates that the property value contains only lowercase characters.
  */
 context(builder: ValidationBuilder<T>)
-fun <T> KProperty1<T, String?>.lowercase(
+fun <T> KProperty1<T, String?>.isLowercase(
     message: String? = null,
     errorCode: String? = null,
 ) = with(builder) {
@@ -122,7 +122,7 @@ fun <T> KProperty1<T, String?>.lowercase(
  * Validates that the property value contains only uppercase characters.
  */
 context(builder: ValidationBuilder<T>)
-fun <T> KProperty1<T, String?>.uppercase(
+fun <T> KProperty1<T, String?>.isUppercase(
     message: String? = null,
     errorCode: String? = null,
 ) = with(builder) {
@@ -133,7 +133,7 @@ fun <T> KProperty1<T, String?>.uppercase(
  * Validates that the property value is a valid email.
  */
 context(builder: ValidationBuilder<T>)
-fun <T> KProperty1<T, String?>.email(
+fun <T> KProperty1<T, String?>.isEmail(
     message: String? = null,
     errorCode: String? = null,
 ) = with(builder) {
@@ -147,7 +147,7 @@ fun <T> KProperty1<T, String?>.email(
  * Validates that the property value is a valid UUID.
  */
 context(builder: ValidationBuilder<T>)
-fun <T> KProperty1<T, String?>.uuid(
+fun <T> KProperty1<T, String?>.isUuid(
     message: String? = null,
     errorCode: String? = null,
 ) = with(builder) {

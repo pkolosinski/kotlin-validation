@@ -68,9 +68,9 @@ class ComparableRulesSpec : ShouldSpec({
         }
     }
 
-    context("int range") {
+    context("int inRange inclusive") {
         val validator = buildValidator {
-            TestedClass::intValue.range(1..10)
+            TestedClass::intValue.inRange(1..10)
         }
         withShoulds(
             null to true,
@@ -84,9 +84,25 @@ class ComparableRulesSpec : ShouldSpec({
         }
     }
 
-    context("date range") {
+    context("int inRange exclusive") {
         val validator = buildValidator {
-            TestedClass::dateValue.range(LocalDate(2020, 1, 1)..LocalDate(2020, 1, 10))
+            TestedClass::intValue.inRange(1..<10)
+        }
+        withShoulds(
+            null to true,
+            1 to true,
+            10 to false,
+            5 to true,
+            0 to false,
+            11 to false,
+        ) { (value, isValid) ->
+            validator(TestedClass(value, null)).isValid() shouldBe isValid
+        }
+    }
+
+    context("date inRange") {
+        val validator = buildValidator {
+            TestedClass::dateValue.inRange(LocalDate(2020, 1, 1)..LocalDate(2020, 1, 10))
         }
         withShoulds(
             null to true,

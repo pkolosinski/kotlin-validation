@@ -2,8 +2,8 @@ package dev.pkolosinski.kotlinvalidation
 
 import dev.pkolosinski.kotlinvalidation.ValidationResult.Invalid
 import dev.pkolosinski.kotlinvalidation.ValidationResult.Valid
-import fixtures.invalidResult
-import fixtures.validResult
+import dev.pkolosinski.kotlinvalidation.fixtures.invalidResult
+import dev.pkolosinski.kotlinvalidation.fixtures.validResult
 import io.kotest.core.spec.style.ShouldSpec
 import io.kotest.matchers.shouldBe
 

@@ -54,7 +54,7 @@ fun <T, R : Collection<*>> KProperty1<T, R?>.sizeIn(
  * Validates that the collection has only unique elements.
  */
 context(builder: ValidationBuilder<T>)
-fun <T, R : Collection<*>> KProperty1<T, R?>.uniqueElements(
+fun <T, R : Collection<*>> KProperty1<T, R?>.hasUniqueElements(
     message: String? = null,
     errorCode: String? = null,
 ) = with(builder) {
