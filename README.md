@@ -45,3 +45,29 @@ val result = userValidator(User("not-uuid", "", "bad-email", -1))
 | `ensureNotBlank` | Fails if the string is `null` or blank.        |
 
 All violations are collected and returned together (collect-all mode).
+
+### Map validation
+
+Map properties support whole-map predicates, size rules, and nested key/value validation:
+
+```kotlin
+data class Request(val attributes: Map<String, String?>?)
+
+val validator = buildValidator {
+    Request::attributes.isNotEmpty()
+    Request::attributes.eachSatisfies(errorCode = "ATTRIBUTE_BLANK") {
+        it.isNotBlank()
+    }
+    Request::attributes.validateKeys {
+        ensure(errorCode = "ATTRIBUTE_KEY") { it.startsWith("x-") }
+    }
+    Request::attributes.validateEntries {
+        Map.Entry<String, String?>::value.isNotNull(errorCode = "ATTRIBUTE_REQUIRED")
+    }
+}
+```
+
+Nested map errors use paths such as `attributes[sku]` and `attributes[sku].value`. Map-specific
+size and key/value traversal helpers treat null maps as valid and skip null elements, while
+whole-map `satisfies` controls null handling through its predicate and entry validation can check
+nullable keys or values explicitly.

@@ -2,6 +2,7 @@ package dev.pkolosinski.kotlinvalidation
 
 import dev.pkolosinski.kotlinvalidation.ValidationResult.Invalid
 import dev.pkolosinski.kotlinvalidation.ValidationResult.Valid
+import kotlin.jvm.JvmName
 import kotlin.reflect.KProperty1
 
 internal typealias ValidationRule<T> = (T) -> List<ValidationError>
@@ -75,6 +76,15 @@ class ValidationBuilder<T> internal constructor(
         ensure(message, errorCode, predicate)
     }
 
+    @JvmName("eachMapEntrySatisfies")
+    fun <K, V : Any> KProperty1<T, Map<K, V?>?>.eachSatisfies(
+        message: String? = null,
+        errorCode: String? = null,
+        predicate: (Map.Entry<K, V?>) -> Boolean,
+    ) = validateEntries {
+        ensure(message, errorCode, predicate)
+    }
+
     fun <R : Any> KProperty1<T, Collection<R?>?>.validateEach(
         validationBlock: ValidationBuilder<R>.() -> Unit,
     ) {
@@ -114,14 +124,57 @@ class ValidationBuilder<T> internal constructor(
         val mapValueValidationBuilder = ValidationBuilder<V>()
             .apply(validationBlock)
 
-        val mapRules = mapValueValidationBuilder.rules.map { rule ->
+        addMapRules(mapValueValidationBuilder) { instance ->
+            mapProperty.get(instance).orEmpty().asSequence().mapNotNull { (key, value) ->
+                value?.let { "$mapPath[$key]" to it }
+            }
+        }
+    }
+
+    fun <K, V> KProperty1<T, Map<K, V>?>.validateKeys(
+        validationBlock: ValidationBuilder<K>.() -> Unit,
+    ) {
+        val mapProperty = this
+        val mapPath = appendPropToPath(mapProperty)
+        val mapKeyValidationBuilder = ValidationBuilder<K>()
+            .apply(validationBlock)
+
+        addMapRules(mapKeyValidationBuilder) { instance ->
+            mapProperty.get(instance).orEmpty().asSequence().mapNotNull { (key, _) ->
+                key?.let { "$mapPath[$it]" to it }
+            }
+        }
+    }
+
+    fun <K, V> KProperty1<T, Map<K, V?>?>.validateEntries(
+        validationBlock: ValidationBuilder<Map.Entry<K, V?>>.() -> Unit,
+    ) {
+        val mapProperty = this
+        val mapPath = appendPropToPath(mapProperty)
+        val mapEntryValidationBuilder = ValidationBuilder<Map.Entry<K, V?>>()
+            .apply(validationBlock)
+
+        addMapRules(mapEntryValidationBuilder) { instance ->
+            mapProperty.get(instance).orEmpty().asSequence().map { entry ->
+                "$mapPath[${entry.key}]" to entry
+            }
+        }
+    }
+
+    private fun <R> addMapRules(
+        elementValidationBuilder: ValidationBuilder<R>,
+        elements: (T) -> Sequence<Pair<String, R>>,
+    ) {
+        val mapRules = elementValidationBuilder.rules.map { rule ->
             { instance: T ->
-                mapProperty.get(instance).orEmpty()
-                    .flatMap { (key, value) ->
-                        value?.let { v ->
-                            rule(v).map { it.prependPath("$mapPath[$key]") }
-                        }.orEmpty()
-                    }
+                val errors = elements(instance).map { (path, element) ->
+                    rule(element).map { it.prependPath(path) }
+                }
+                if (failFast) {
+                    errors.firstOrNull { it.isNotEmpty() }.orEmpty()
+                } else {
+                    errors.flatten().toList()
+                }
             }
         }
 

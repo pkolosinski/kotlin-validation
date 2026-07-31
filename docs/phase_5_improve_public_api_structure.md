@@ -41,7 +41,7 @@ Expected result:
 Review the API for unnecessary classes, interfaces, or inheritance-shaped abstractions.
 
 Scope:
-- Use `fun interface Validator<T>` with an `validate` method as the primary validator abstraction.
+- Use `typealias Validator<T>` as the primary validator abstraction.
 - Avoid adding abstract base classes or inheritance hierarchies.
 - Prefer top-level functions, extension functions, immutable data classes, and sealed result types.
 - Keep classes only where they model data or are needed for DSL ergonomics.

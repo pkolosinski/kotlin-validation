@@ -1,12 +1,9 @@
 package dev.pkolosinski.kotlinvalidation
 
-import dev.pkolosinski.kotlinvalidation.ValidationResult.Invalid
-import dev.pkolosinski.kotlinvalidation.ValidationResult.Valid
 import io.kotest.core.spec.style.ShouldSpec
 import io.kotest.matchers.collections.shouldContainExactlyInAnyOrder
 import io.kotest.matchers.collections.shouldHaveSize
 import io.kotest.matchers.equals.shouldEqual
-import io.kotest.matchers.types.shouldBeTypeOf
 
 private data class SampleDto(
     val first: String?,
@@ -70,8 +67,8 @@ class ValidatorSpec : ShouldSpec({
             val result = validator(dto)
 
             // then
-            result.shouldBeTypeOf<Valid<SampleDto>>()
-            result.value shouldEqual dto
+            result.shouldBeValid()
+                .value shouldEqual dto
         }
 
         should("return invalid result when property rule is violated") {
@@ -90,9 +87,9 @@ class ValidatorSpec : ShouldSpec({
             val result = validator(dto)
 
             // then
-            result.shouldBeTypeOf<Invalid>()
-            result.errors shouldHaveSize 1
-            result.errors.first() shouldEqual expectedError
+            result.shouldBeInvalid()
+                .errors.shouldHaveSize(1)
+                .first() shouldEqual expectedError
         }
 
         should("return invalid result when non-property rule is violated") {
@@ -111,9 +108,9 @@ class ValidatorSpec : ShouldSpec({
             val result = validator(dto)
 
             // then
-            result.shouldBeTypeOf<Invalid>()
-            result.errors shouldHaveSize 1
-            result.errors.first() shouldEqual expectedError
+            result.shouldBeInvalid()
+                .errors.shouldHaveSize(1)
+                .first() shouldEqual expectedError
         }
 
         should("return invalid result when nested property rule is violated") {
@@ -136,9 +133,9 @@ class ValidatorSpec : ShouldSpec({
             val result = validator(dto)
 
             // then
-            result.shouldBeTypeOf<Invalid>()
-            result.errors shouldHaveSize 1
-            result.errors.first() shouldEqual expectedError
+            result.shouldBeInvalid()
+                .errors.shouldHaveSize(1)
+                .first() shouldEqual expectedError
         }
 
         should("return invalid result with aggregated errors") {
@@ -178,9 +175,9 @@ class ValidatorSpec : ShouldSpec({
             val result = validator(dto)
 
             // then
-            result.shouldBeTypeOf<Invalid>()
-            result.errors shouldHaveSize expectedErrors.size
-            result.errors shouldContainExactlyInAnyOrder expectedErrors
+            result.shouldBeInvalid()
+                .errors.shouldHaveSize(expectedErrors.size)
+                .shouldContainExactlyInAnyOrder(expectedErrors)
         }
 
         should("return the same validation result when validating using function and builder") {
@@ -222,9 +219,9 @@ class ValidatorSpec : ShouldSpec({
             val result = validate(dto, failFast = true, validationBlock)
 
             // then
-            result.shouldBeTypeOf<Invalid>()
-            result.errors shouldHaveSize 1
-            result.errors.first() shouldEqual expectedError
+            result.shouldBeInvalid()
+                .errors.shouldHaveSize(1)
+                .first() shouldEqual expectedError
         }
 
         should("return valid result when fail-fast is enabled and all rules are satisfied") {
@@ -242,8 +239,8 @@ class ValidatorSpec : ShouldSpec({
             val result = validate(dto, failFast = true, validationBlock)
 
             // then
-            result.shouldBeTypeOf<Valid<SampleDto>>()
-            result.value shouldEqual dto
+            result.shouldBeValid()
+                .value shouldEqual dto
         }
 
         should("return nested errors when fail-fast is enabled and a nested rule fails") {
@@ -266,9 +263,9 @@ class ValidatorSpec : ShouldSpec({
             val result = validate(dto, failFast = true, validationBlock)
 
             // then
-            result.shouldBeTypeOf<Invalid>()
-            result.errors shouldHaveSize 1
-            result.errors.first() shouldEqual expectedError
+            result.shouldBeInvalid()
+                .errors.shouldHaveSize(1)
+                .first() shouldEqual expectedError
         }
     }
 

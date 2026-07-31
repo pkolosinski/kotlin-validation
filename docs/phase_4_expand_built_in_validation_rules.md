@@ -2,7 +2,8 @@
 
 ← [Back to implementation index](./IMPLEMENTATION_INDEX.md)
 
-**Status:** Done **Goal:** Add common rules for nullability, strings, numbers, and collections.
+**Status:** Done
+**Goal:** Add common rules for nullability, strings, numbers, and collections.
 
 This phase grows the DSL with reusable rules that cover typical request/DTO constraints.
 
@@ -135,3 +136,43 @@ Scope:
 Expected result:
 
 - Rules for collection elements are available and produce predictable error paths.
+
+## Task 4.7: Add map validation rules
+
+**Status:** Done
+
+Scope:
+
+- Keep the existing property-level `satisfies` rule as the whole-map predicate.
+- Add map size rules: `isNotEmpty`, `minSize`, `maxSize`, and `sizeIn`.
+- Add `eachSatisfies` for map values, `validateKeys` for map keys, and `validateEntries` for
+  `Map.Entry` values.
+- Preserve map paths such as `attributes[sku]`, `attributes[sku].key`, and
+  `attributes[sku].value`.
+- Treat null maps as valid for map-specific size and traversal helpers, and skip null keys or
+  values in key/value traversal. Whole-map `satisfies` keeps predicate-defined null handling.
+  Entry validation visits entries with nullable members so callers can validate those members
+  explicitly.
+- Honor fail-fast mode while traversing map entries and values.
+
+Examples:
+
+```kotlin
+val validator = buildValidator {
+    Request::attributes.isNotEmpty()
+    Request::attributes.eachSatisfies(errorCode = "ATTRIBUTE_BLANK") {
+        it.isNotBlank()
+    }
+    Request::attributes.validateKeys {
+        ensure(errorCode = "ATTRIBUTE_KEY") { it.startsWith("x-") }
+    }
+    Request::attributes.validateEntries {
+        Map.Entry<String, String?>::value.isNotNull(errorCode = "ATTRIBUTE_REQUIRED")
+    }
+}
+```
+
+Expected result:
+
+- Maps have first-class size and key/value/entry validation without duplicating whole-map
+  `satisfies` behavior.
