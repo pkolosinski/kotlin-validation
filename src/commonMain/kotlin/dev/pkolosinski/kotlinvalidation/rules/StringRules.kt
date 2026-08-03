@@ -8,10 +8,10 @@ import kotlin.uuid.Uuid
  * Validates that the property value is not blank (non-empty and contains non-whitespace).
  */
 context(builder: ValidationBuilder<T>)
-fun <T> KProperty1<T, String?>.isNotBlank(
+public fun <T> KProperty1<T, String?>.isNotBlank(
     message: String? = null,
     errorCode: String? = null,
-) = with(builder) {
+): Unit = with(builder) {
     satisfies(message, errorCode) { it == null || it.isNotBlank() }
 }
 
@@ -19,10 +19,10 @@ fun <T> KProperty1<T, String?>.isNotBlank(
  * Validates that the property value is not empty.
  */
 context(builder: ValidationBuilder<T>)
-fun <T> KProperty1<T, String?>.isNotEmpty(
+public fun <T> KProperty1<T, String?>.isNotEmpty(
     message: String? = null,
     errorCode: String? = null,
-) = with(builder) {
+): Unit = with(builder) {
     satisfies(message, errorCode) { it == null || it.isNotEmpty() }
 }
 
@@ -30,11 +30,11 @@ fun <T> KProperty1<T, String?>.isNotEmpty(
  * Validates that the property value matches the given regular expression.
  */
 context(builder: ValidationBuilder<T>)
-fun <T> KProperty1<T, String?>.matches(
+public fun <T> KProperty1<T, String?>.matches(
     pattern: String,
     message: String? = null,
     errorCode: String? = null,
-) = with(builder) {
+): Unit = with(builder) {
     satisfies(message, errorCode) { it == null || Regex(pattern).matches(it) }
 }
 
@@ -42,11 +42,11 @@ fun <T> KProperty1<T, String?>.matches(
  * Validates that the property value has at least [min] characters.
  */
 context(builder: ValidationBuilder<T>)
-fun <T> KProperty1<T, String?>.minLength(
+public fun <T> KProperty1<T, String?>.minLength(
     min: Int,
     message: String? = null,
     errorCode: String? = null,
-) = with(builder) {
+): Unit = with(builder) {
     satisfies(message, errorCode) { it == null || it.length >= min }
 }
 
@@ -54,11 +54,11 @@ fun <T> KProperty1<T, String?>.minLength(
  * Validates that the property value has at most [max] characters.
  */
 context(builder: ValidationBuilder<T>)
-fun <T> KProperty1<T, String?>.maxLength(
+public fun <T> KProperty1<T, String?>.maxLength(
     max: Int,
     message: String? = null,
     errorCode: String? = null,
-) = with(builder) {
+): Unit = with(builder) {
     satisfies(message, errorCode) { it == null || it.length <= max }
 }
 
@@ -66,11 +66,11 @@ fun <T> KProperty1<T, String?>.maxLength(
  * Validates that the property value length is within the given [range].
  */
 context(builder: ValidationBuilder<T>)
-fun <T> KProperty1<T, String?>.lengthIn(
+public fun <T> KProperty1<T, String?>.lengthIn(
     range: IntRange,
     message: String? = null,
     errorCode: String? = null,
-) = with(builder) {
+): Unit = with(builder) {
     satisfies(message, errorCode) { it == null || it.length in range }
 }
 
@@ -78,10 +78,10 @@ fun <T> KProperty1<T, String?>.lengthIn(
  * Validates that the property value contains only digits.
  */
 context(builder: ValidationBuilder<T>)
-fun <T> KProperty1<T, String?>.isDigitsOnly(
+public fun <T> KProperty1<T, String?>.isDigitsOnly(
     message: String? = null,
     errorCode: String? = null,
-) = with(builder) {
+): Unit = with(builder) {
     satisfies(message, errorCode) { it == null || it.all { char -> char.isDigit() } }
 }
 
@@ -89,10 +89,10 @@ fun <T> KProperty1<T, String?>.isDigitsOnly(
  * Validates that the property value contains only alphabetic characters.
  */
 context(builder: ValidationBuilder<T>)
-fun <T> KProperty1<T, String?>.isLettersOnly(
+public fun <T> KProperty1<T, String?>.isLettersOnly(
     message: String? = null,
     errorCode: String? = null,
-) = with(builder) {
+): Unit = with(builder) {
     satisfies(message, errorCode) { it == null || it.all { char -> char.isLetter() } }
 }
 
@@ -100,10 +100,10 @@ fun <T> KProperty1<T, String?>.isLettersOnly(
  * Validates that the property value is alphanumeric.
  */
 context(builder: ValidationBuilder<T>)
-fun <T> KProperty1<T, String?>.isAlphanumeric(
+public fun <T> KProperty1<T, String?>.isAlphanumeric(
     message: String? = null,
     errorCode: String? = null,
-) = with(builder) {
+): Unit = with(builder) {
     satisfies(message, errorCode) { it == null || it.all { char -> char.isLetterOrDigit() } }
 }
 
@@ -111,10 +111,10 @@ fun <T> KProperty1<T, String?>.isAlphanumeric(
  * Validates that the property value contains only lowercase characters.
  */
 context(builder: ValidationBuilder<T>)
-fun <T> KProperty1<T, String?>.isLowercase(
+public fun <T> KProperty1<T, String?>.isLowercase(
     message: String? = null,
     errorCode: String? = null,
-) = with(builder) {
+): Unit = with(builder) {
     satisfies(message, errorCode) { it == null || it.all { char -> char.isLowerCase() } }
 }
 
@@ -122,10 +122,10 @@ fun <T> KProperty1<T, String?>.isLowercase(
  * Validates that the property value contains only uppercase characters.
  */
 context(builder: ValidationBuilder<T>)
-fun <T> KProperty1<T, String?>.isUppercase(
+public fun <T> KProperty1<T, String?>.isUppercase(
     message: String? = null,
     errorCode: String? = null,
-) = with(builder) {
+): Unit = with(builder) {
     satisfies(message, errorCode) { it == null || it.all { char -> char.isUpperCase() } }
 }
 
@@ -133,10 +133,10 @@ fun <T> KProperty1<T, String?>.isUppercase(
  * Validates that the property value is a valid email.
  */
 context(builder: ValidationBuilder<T>)
-fun <T> KProperty1<T, String?>.isEmail(
+public fun <T> KProperty1<T, String?>.isEmail(
     message: String? = null,
     errorCode: String? = null,
-) = with(builder) {
+): Unit = with(builder) {
     satisfies(message, errorCode) {
         it == null ||
             Regex("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$").matches(it)
@@ -147,9 +147,9 @@ fun <T> KProperty1<T, String?>.isEmail(
  * Validates that the property value is a valid UUID.
  */
 context(builder: ValidationBuilder<T>)
-fun <T> KProperty1<T, String?>.isUuid(
+public fun <T> KProperty1<T, String?>.isUuid(
     message: String? = null,
     errorCode: String? = null,
-) = with(builder) {
+): Unit = with(builder) {
     satisfies(message, errorCode) { it == null || Uuid.parseOrNull(it) != null }
 }

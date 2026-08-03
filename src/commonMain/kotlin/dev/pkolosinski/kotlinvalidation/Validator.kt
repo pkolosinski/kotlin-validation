@@ -3,9 +3,9 @@ package dev.pkolosinski.kotlinvalidation
 import dev.pkolosinski.kotlinvalidation.ValidationResult.Invalid
 import dev.pkolosinski.kotlinvalidation.ValidationResult.Valid
 
-typealias Validator<T> = (T) -> ValidationResult<T>
+public typealias Validator<T> = (T) -> ValidationResult<T>
 
-fun <T> buildValidator(
+public fun <T> buildValidator(
     failFast: Boolean = false,
     validationBlock: ValidationBuilder<T>.() -> Unit,
 ): Validator<T> = ValidationBuilder<T>(failFast = failFast)
@@ -17,17 +17,17 @@ fun <T> buildValidator(
  * @param failFast if `true`, stops after the first validation error; otherwise collects all errors.
  * @return a [ValidationResult] containing either the valid value or a list of validation errors.
  */
-fun <T> validate(
+public fun <T> validate(
     value: T,
     failFast: Boolean = false,
     validationBlock: ValidationBuilder<T>.() -> Unit,
 ): ValidationResult<T> = buildValidator(failFast = failFast, validationBlock)(value)
 
-infix fun <T> Validator<T>.and(other: Validator<T>): Validator<T> = { value ->
+public infix fun <T> Validator<T>.and(other: Validator<T>): Validator<T> = { value ->
     this(value) combine other(value)
 }
 
-fun <T> allOf(vararg validators: Validator<T>): Validator<T> = { value ->
+public fun <T> allOf(vararg validators: Validator<T>): Validator<T> = { value ->
     validators.map { it(value) }
         .fold(Valid(value) as ValidationResult<T>) { current, next ->
             current combine next

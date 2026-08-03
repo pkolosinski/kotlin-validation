@@ -7,10 +7,10 @@ import kotlin.reflect.KProperty1
  * Validates that the map is not empty.
  */
 context(builder: ValidationBuilder<T>)
-fun <T, R : Map<*, *>> KProperty1<T, R?>.isNotEmpty(
+public fun <T, R : Map<*, *>> KProperty1<T, R?>.isNotEmpty(
     message: String? = null,
     errorCode: String? = null,
-) = with(builder) {
+): Unit = with(builder) {
     satisfies(message, errorCode) { it == null || it.isNotEmpty() }
 }
 
@@ -18,11 +18,11 @@ fun <T, R : Map<*, *>> KProperty1<T, R?>.isNotEmpty(
  * Validates that the map has at least [min] entries.
  */
 context(builder: ValidationBuilder<T>)
-fun <T, R : Map<*, *>> KProperty1<T, R?>.minSize(
+public fun <T, R : Map<*, *>> KProperty1<T, R?>.minSize(
     min: Int,
     message: String? = null,
     errorCode: String? = null,
-) = with(builder) {
+): Unit = with(builder) {
     satisfies(message, errorCode) { it == null || it.size >= min }
 }
 
@@ -30,11 +30,11 @@ fun <T, R : Map<*, *>> KProperty1<T, R?>.minSize(
  * Validates that the map has at most [max] entries.
  */
 context(builder: ValidationBuilder<T>)
-fun <T, R : Map<*, *>> KProperty1<T, R?>.maxSize(
+public fun <T, R : Map<*, *>> KProperty1<T, R?>.maxSize(
     max: Int,
     message: String? = null,
     errorCode: String? = null,
-) = with(builder) {
+): Unit = with(builder) {
     satisfies(message, errorCode) { it == null || it.size <= max }
 }
 
@@ -42,10 +42,10 @@ fun <T, R : Map<*, *>> KProperty1<T, R?>.maxSize(
  * Validates that the map size is within the given [range].
  */
 context(builder: ValidationBuilder<T>)
-fun <T, R : Map<*, *>> KProperty1<T, R?>.sizeIn(
+public fun <T, R : Map<*, *>> KProperty1<T, R?>.sizeIn(
     range: IntRange,
     message: String? = null,
     errorCode: String? = null,
-) = with(builder) {
+): Unit = with(builder) {
     satisfies(message, errorCode) { it == null || it.size in range }
 }

@@ -14,6 +14,7 @@ group = "dev.pkolosinski.kotlinvalidation"
 version = scmVersion.version
 
 kotlin {
+    explicitApi()
     jvmToolchain(21)
 
     jvm()

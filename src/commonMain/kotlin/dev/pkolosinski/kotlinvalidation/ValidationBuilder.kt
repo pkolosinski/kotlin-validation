@@ -7,13 +7,13 @@ import kotlin.reflect.KProperty1
 
 internal typealias ValidationRule<T> = (T) -> List<ValidationError>
 
-class ValidationBuilder<T> internal constructor(
+public class ValidationBuilder<T> internal constructor(
     private val pathPrefix: String? = null,
     private val failFast: Boolean = false,
 ) {
     private val rules: MutableList<ValidationRule<T>> = mutableListOf()
 
-    fun ensure(
+    public fun ensure(
         message: String? = null,
         errorCode: String? = null,
         predicate: (T) -> Boolean,
@@ -32,7 +32,7 @@ class ValidationBuilder<T> internal constructor(
         }
     }
 
-    fun <R> KProperty1<T, R>.satisfies(
+    public fun <R> KProperty1<T, R>.satisfies(
         message: String? = null,
         errorCode: String? = null,
         predicate: (R) -> Boolean,
@@ -52,7 +52,9 @@ class ValidationBuilder<T> internal constructor(
         }
     }
 
-    fun <R : Any> KProperty1<T, R?>.validate(validationBlock: ValidationBuilder<R>.() -> Unit) {
+    public fun <R : Any> KProperty1<T, R?>.validate(
+        validationBlock: ValidationBuilder<R>.() -> Unit,
+    ) {
         val property = this
         val propertyValidationBuilder = ValidationBuilder<R>(
             pathPrefix = appendPropToPath(property),
@@ -68,24 +70,24 @@ class ValidationBuilder<T> internal constructor(
         rules.addAll(propertyRules)
     }
 
-    fun <R> KProperty1<T, Collection<R>?>.eachSatisfies(
+    public fun <R> KProperty1<T, Collection<R>?>.eachSatisfies(
         message: String? = null,
         errorCode: String? = null,
         predicate: (R) -> Boolean,
-    ) = validateEach {
+    ): Unit = validateEach {
         ensure(message, errorCode, predicate)
     }
 
     @JvmName("eachMapEntrySatisfies")
-    fun <K, V : Any> KProperty1<T, Map<K, V?>?>.eachSatisfies(
+    public fun <K, V : Any> KProperty1<T, Map<K, V?>?>.eachSatisfies(
         message: String? = null,
         errorCode: String? = null,
         predicate: (Map.Entry<K, V?>) -> Boolean,
-    ) = validateEntries {
+    ): Unit = validateEntries {
         ensure(message, errorCode, predicate)
     }
 
-    fun <R : Any> KProperty1<T, Collection<R?>?>.validateEach(
+    public fun <R : Any> KProperty1<T, Collection<R?>?>.validateEach(
         validationBlock: ValidationBuilder<R>.() -> Unit,
     ) {
         val collectionProperty = this
@@ -116,7 +118,7 @@ class ValidationBuilder<T> internal constructor(
         rules.addAll(collectionRules)
     }
 
-    fun <K, V : Any> KProperty1<T, Map<K, V?>?>.validateValues(
+    public fun <K, V : Any> KProperty1<T, Map<K, V?>?>.validateValues(
         validationBlock: ValidationBuilder<V>.() -> Unit,
     ) {
         val mapProperty = this
@@ -131,7 +133,7 @@ class ValidationBuilder<T> internal constructor(
         }
     }
 
-    fun <K, V> KProperty1<T, Map<K, V>?>.validateKeys(
+    public fun <K, V> KProperty1<T, Map<K, V>?>.validateKeys(
         validationBlock: ValidationBuilder<K>.() -> Unit,
     ) {
         val mapProperty = this
@@ -146,7 +148,7 @@ class ValidationBuilder<T> internal constructor(
         }
     }
 
-    fun <K, V> KProperty1<T, Map<K, V?>?>.validateEntries(
+    public fun <K, V> KProperty1<T, Map<K, V?>?>.validateEntries(
         validationBlock: ValidationBuilder<Map.Entry<K, V?>>.() -> Unit,
     ) {
         val mapProperty = this
@@ -185,20 +187,27 @@ class ValidationBuilder<T> internal constructor(
         rules.add(rule)
     }
 
-    internal fun build(): Validator<T> = { instance ->
-        val errors: List<ValidationError> = if (failFast) {
-            findFirstBrokenRuleOrEmpty(instance)
-        } else {
-            rules.flatMap { rule -> rule(instance) }
-        }
-        if (errors.isEmpty()) {
-            Valid(instance)
-        } else {
-            Invalid(errors)
+    internal fun build(): Validator<T> {
+        val ruleSnapshot = rules.toList()
+
+        return { instance ->
+            val errors: List<ValidationError> = if (failFast) {
+                findFirstBrokenRuleOrEmpty(instance, ruleSnapshot)
+            } else {
+                ruleSnapshot.flatMap { rule -> rule(instance) }
+            }
+            if (errors.isEmpty()) {
+                Valid(instance)
+            } else {
+                Invalid(errors)
+            }
         }
     }
 
-    private fun findFirstBrokenRuleOrEmpty(instance: T): List<ValidationError> = rules.asSequence()
+    private fun findFirstBrokenRuleOrEmpty(
+        instance: T,
+        ruleSnapshot: List<ValidationRule<T>>,
+    ): List<ValidationError> = ruleSnapshot.asSequence()
         .map { rule -> rule(instance) }
         .firstOrNull { it.isNotEmpty() }
         .orEmpty()
