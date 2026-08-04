@@ -38,9 +38,9 @@ class StringRulesSpec : ShouldSpec({
         }
     }
 
-    context("regex") {
+    context("matches") {
         val validator = buildValidator {
-            TestedClass::value.regex("[A-Z]+")
+            TestedClass::value.matches("[A-Z]+")
         }
         withShoulds(
             null to true,
@@ -96,9 +96,9 @@ class StringRulesSpec : ShouldSpec({
         }
     }
 
-    context("digitsOnly") {
+    context("isDigitsOnly") {
         val validator = buildValidator {
-            TestedClass::value.digitsOnly()
+            TestedClass::value.isDigitsOnly()
         }
         withShoulds(
             null to true,
@@ -110,9 +110,9 @@ class StringRulesSpec : ShouldSpec({
         }
     }
 
-    context("lettersOnly") {
+    context("isLettersOnly") {
         val validator = buildValidator {
-            TestedClass::value.lettersOnly()
+            TestedClass::value.isLettersOnly()
         }
         withShoulds(
             null to true,
@@ -125,9 +125,9 @@ class StringRulesSpec : ShouldSpec({
         }
     }
 
-    context("alphanumeric") {
+    context("isAlphanumeric") {
         val validator = buildValidator {
-            TestedClass::value.alphanumeric()
+            TestedClass::value.isAlphanumeric()
         }
         withShoulds(
             null to true,
@@ -139,9 +139,9 @@ class StringRulesSpec : ShouldSpec({
         }
     }
 
-    context("lowercase") {
+    context("isLowercase") {
         val validator = buildValidator {
-            TestedClass::value.lowercase()
+            TestedClass::value.isLowercase()
         }
         withShoulds(
             null to true,
@@ -153,9 +153,9 @@ class StringRulesSpec : ShouldSpec({
         }
     }
 
-    context("uppercase") {
+    context("isUppercase") {
         val validator = buildValidator {
-            TestedClass::value.uppercase()
+            TestedClass::value.isUppercase()
         }
         withShoulds(
             null to true,
@@ -167,9 +167,9 @@ class StringRulesSpec : ShouldSpec({
         }
     }
 
-    context("email") {
+    context("isEmail") {
         val validator = buildValidator {
-            TestedClass::value.email()
+            TestedClass::value.isEmail()
         }
         withShoulds(
             null to true,
@@ -184,9 +184,9 @@ class StringRulesSpec : ShouldSpec({
         }
     }
 
-    context("uuid") {
+    context("isUuid") {
         val validator = buildValidator {
-            TestedClass::value.uuid()
+            TestedClass::value.isUuid()
         }
         withShoulds(
             null to true,

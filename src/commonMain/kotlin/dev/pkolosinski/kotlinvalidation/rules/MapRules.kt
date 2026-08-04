@@ -4,10 +4,10 @@ import dev.pkolosinski.kotlinvalidation.ValidationBuilder
 import kotlin.reflect.KProperty1
 
 /**
- * Validates that the collection is not empty.
+ * Validates that the map is not empty.
  */
 context(builder: ValidationBuilder<T>)
-public fun <T, R : Collection<*>> KProperty1<T, R?>.isNotEmpty(
+public fun <T, R : Map<*, *>> KProperty1<T, R?>.isNotEmpty(
     message: String? = null,
     errorCode: String? = null,
 ): Unit = with(builder) {
@@ -15,10 +15,10 @@ public fun <T, R : Collection<*>> KProperty1<T, R?>.isNotEmpty(
 }
 
 /**
- * Validates that the collection has at least [min] elements.
+ * Validates that the map has at least [min] entries.
  */
 context(builder: ValidationBuilder<T>)
-public fun <T, R : Collection<*>> KProperty1<T, R?>.minSize(
+public fun <T, R : Map<*, *>> KProperty1<T, R?>.minSize(
     min: Int,
     message: String? = null,
     errorCode: String? = null,
@@ -27,10 +27,10 @@ public fun <T, R : Collection<*>> KProperty1<T, R?>.minSize(
 }
 
 /**
- * Validates that the collection has at most [max] elements.
+ * Validates that the map has at most [max] entries.
  */
 context(builder: ValidationBuilder<T>)
-public fun <T, R : Collection<*>> KProperty1<T, R?>.maxSize(
+public fun <T, R : Map<*, *>> KProperty1<T, R?>.maxSize(
     max: Int,
     message: String? = null,
     errorCode: String? = null,
@@ -39,24 +39,13 @@ public fun <T, R : Collection<*>> KProperty1<T, R?>.maxSize(
 }
 
 /**
- * Validates that the collection size is within the given [range].
+ * Validates that the map size is within the given [range].
  */
 context(builder: ValidationBuilder<T>)
-public fun <T, R : Collection<*>> KProperty1<T, R?>.sizeIn(
+public fun <T, R : Map<*, *>> KProperty1<T, R?>.sizeIn(
     range: IntRange,
     message: String? = null,
     errorCode: String? = null,
 ): Unit = with(builder) {
     satisfies(message, errorCode) { it == null || it.size in range }
-}
-
-/**
- * Validates that the collection has only unique elements.
- */
-context(builder: ValidationBuilder<T>)
-public fun <T, R : Collection<*>> KProperty1<T, R?>.hasUniqueElements(
-    message: String? = null,
-    errorCode: String? = null,
-): Unit = with(builder) {
-    satisfies(message, errorCode) { it == null || it.distinct().size == it.size }
 }

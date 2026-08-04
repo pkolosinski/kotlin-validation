@@ -1,4 +1,4 @@
-package fixtures
+package dev.pkolosinski.kotlinvalidation.fixtures
 
 import dev.pkolosinski.kotlinvalidation.ValidationError
 import dev.pkolosinski.kotlinvalidation.ValidationResult

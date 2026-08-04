@@ -66,9 +66,9 @@ class CollectionRulesSpec : ShouldSpec({
         }
     }
 
-    context("uniqueElements") {
+    context("hasUniqueElements") {
         val validator = buildValidator {
-            TestedClass::collection.uniqueElements()
+            TestedClass::collection.hasUniqueElements()
         }
         withShoulds(
             null to true,

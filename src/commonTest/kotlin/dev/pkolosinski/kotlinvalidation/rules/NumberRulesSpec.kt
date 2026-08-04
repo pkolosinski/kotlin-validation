@@ -11,10 +11,10 @@ class NumberRulesSpec : ShouldSpec({
         val doubleValue: Double? = null,
     )
 
-    context("positive") {
+    context("isPositive") {
         val validator = buildValidator {
-            TestedClass::intValue.positive()
-            TestedClass::doubleValue.positive()
+            TestedClass::intValue.isPositive()
+            TestedClass::doubleValue.isPositive()
         }
         withShoulds(
             TestedClass(null, null) to true,
@@ -26,10 +26,10 @@ class NumberRulesSpec : ShouldSpec({
         }
     }
 
-    context("nonNegative") {
+    context("isNonNegative") {
         val validator = buildValidator {
-            TestedClass::intValue.nonNegative()
-            TestedClass::doubleValue.nonNegative()
+            TestedClass::intValue.isNonNegative()
+            TestedClass::doubleValue.isNonNegative()
         }
         withShoulds(
             TestedClass(null, null) to true,
@@ -41,10 +41,10 @@ class NumberRulesSpec : ShouldSpec({
         }
     }
 
-    context("negative") {
+    context("isNegative") {
         val validator = buildValidator {
-            TestedClass::intValue.negative()
-            TestedClass::doubleValue.negative()
+            TestedClass::intValue.isNegative()
+            TestedClass::doubleValue.isNegative()
         }
         withShoulds(
             TestedClass(null, null) to true,
@@ -56,10 +56,10 @@ class NumberRulesSpec : ShouldSpec({
         }
     }
 
-    context("nonPositive") {
+    context("isNonPositive") {
         val validator = buildValidator {
-            TestedClass::intValue.nonPositive()
-            TestedClass::doubleValue.nonPositive()
+            TestedClass::intValue.isNonPositive()
+            TestedClass::doubleValue.isNonPositive()
         }
         withShoulds(
             TestedClass(null, null) to true,

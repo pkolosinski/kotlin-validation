@@ -7,10 +7,10 @@ import kotlin.reflect.KProperty1
  * Validates that the property value is not null.
  */
 context(builder: ValidationBuilder<T>)
-fun <T, R : Any> KProperty1<T, R?>.isNotNull(
+public fun <T, R : Any> KProperty1<T, R?>.isNotNull(
     message: String? = null,
     errorCode: String? = null,
-) = with(builder) {
+): Unit = with(builder) {
     satisfies(message, errorCode) { it != null }
 }
 
@@ -18,9 +18,9 @@ fun <T, R : Any> KProperty1<T, R?>.isNotNull(
  * Validates that the property value is null.
  */
 context(builder: ValidationBuilder<T>)
-fun <T, R : Any> KProperty1<T, R?>.isNull(
+public fun <T, R : Any> KProperty1<T, R?>.isNull(
     message: String? = null,
     errorCode: String? = null,
-) = with(builder) {
+): Unit = with(builder) {
     satisfies(message, errorCode) { it == null }
 }
